@@ -28,10 +28,13 @@ app.use('/api/webhooks',   rateLimit({ windowMs: 60*1000, max: 300 }));
 app.use('/css',    express.static(path.join(__dirname, '../public/css')));
 app.use('/js',     express.static(path.join(__dirname, '../public/js')));
 
-app.use('/api/auth',     authRoutes);
-app.use('/api/webhooks', webhookRoutes);
+app.use('/api/auth',      authRoutes);
+app.use('/api/webhooks',  webhookRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api',           crudRoutes);
+
+// Healthcheck publico — EasyPanel usa isso
+app.get('/health', (req, res) => res.json({ ok: true, status: 'running' }));
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
